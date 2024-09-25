@@ -14,11 +14,10 @@ package chapter2;
 /**
  * Implementation of a playing card. This class yields immutable objects.
  */
-public class Card
-{
+public class Card implements Comparable<Card> {
 	private Rank aRank;
 	private Suit aSuit;
-	
+
 	/**
 	 * Creates a new card object.
 	 * 
@@ -27,26 +26,32 @@ public class Card
 	 * @pre pRank != null
 	 * @pre pSuit != null
 	 */
-	public Card(Rank pRank, Suit pSuit)
-	{
+	public Card(Rank pRank, Suit pSuit) {
 		assert pRank != null && pSuit != null;
 		aRank = pRank;
 		aSuit = pSuit;
 	}
-	
+
 	/**
 	 * @return The rank of the card.
 	 */
-	public Rank getRank()
-	{
+	public Rank getRank() {
 		return aRank;
 	}
-	
+
 	/**
 	 * @return The suit of the card.
 	 */
-	public Suit getSuit()
-	{
+	public Suit getSuit() {
 		return aSuit;
+	}
+
+	@Override
+	public int compareTo(Card pCard) {
+		return 0;
+	}
+
+	public Card nextCard() {
+		return this;
 	}
 }
