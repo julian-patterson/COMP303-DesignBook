@@ -14,7 +14,14 @@ package chapter2;
 /**
  * Represents the rank of a playing card.
  */
-public enum Rank 
-{ 
-	ACE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING 
+public enum Rank {
+	ACE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING, JOKER;
+
+	public Rank next() {
+		if (this == Rank.KING) {
+			return Rank.ACE;
+		} else {
+			return Rank.values()[this.ordinal() + 1];
+		}
+	}
 }

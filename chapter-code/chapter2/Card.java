@@ -17,6 +17,7 @@ package chapter2;
 public class Card implements Comparable<Card> {
 	private Rank aRank;
 	private Suit aSuit;
+	private Joker aJoker;
 
 	/**
 	 * Creates a new card object.
@@ -28,8 +29,22 @@ public class Card implements Comparable<Card> {
 	 */
 	public Card(Rank pRank, Suit pSuit) {
 		assert pRank != null && pSuit != null;
+		if (pRank == Rank.JOKER && pSuit != Suit.NONE) {
+			throw new IllegalArgumentException("Joker cannot have a suit");
+		}
 		aRank = pRank;
 		aSuit = pSuit;
+		aJoker = Joker.NONE;
+	}
+
+	private Card(Joker pJoker) {
+		aRank = Rank.JOKER;
+		aSuit = Suit.NONE;
+		aJoker = pJoker;
+	}
+
+	public Card createJoker(Joker pJoker) {
+		return new Card(pJoker);
 	}
 
 	/**
@@ -46,12 +61,22 @@ public class Card implements Comparable<Card> {
 		return aSuit;
 	}
 
+	public Joker getJoker() {
+		return aJoker;
+	}
+
 	@Override
 	public int compareTo(Card pCard) {
-		return 0;
+		return this.aRank.ordinal() - pCard.aRank.ordinal();
 	}
 
 	public Card nextCard() {
-		return this;
+		Rank nextRank = (this.aRank == Rank.KING) ? Rank.ACE : Rank.values()[this.aRank.ordinal() + 1];
+
+		if (this.aRank == Rank.KING) {
+			Suit nextSuit = (this.aSuit == Suit.SPADES) ? Suit.CLUBS : Suit.values()[this.aSuit.ordinal() + 1];
+			return new Card(nextRank, nextSuit);
+		}
+		return new Card(nextRank, this.aSuit);
 	}
 }
