@@ -66,6 +66,20 @@ public class Card implements Comparable<Card> {
 	}
 
 	@Override
+	public boolean equals(Object o) {
+		if (o == null) {
+			return false;
+		}
+
+		if (!(o instanceof Card)) {
+			return false;
+		}
+
+		Card otherCard = (Card) o;
+		return this.aRank == otherCard.aRank && this.aSuit == otherCard.aSuit;
+	}
+
+	@Override
 	public int compareTo(Card pCard) {
 		return this.aRank.ordinal() - pCard.aRank.ordinal();
 	}
