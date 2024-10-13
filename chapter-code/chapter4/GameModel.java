@@ -16,14 +16,18 @@ package chapter4;
  * of the Singleton design pattern.
  *
  */
-public class GameModel
-{
+public class GameModel {
 	private static final GameModel INSTANCE = new GameModel();
-	
-	private GameModel() {}
-	
-	public static GameModel instance() 
-	{ 
-		return INSTANCE; 
+	private Deck aDeck = new Deck();
+
+	private GameModel() {
+	}
+
+	public static GameModel instance() {
+		return INSTANCE;
+	}
+
+	public void newGame() {
+		aDeck.shuffle();
 	}
 }
