@@ -1,4 +1,4 @@
-package chapter5;
+package chapter5.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
