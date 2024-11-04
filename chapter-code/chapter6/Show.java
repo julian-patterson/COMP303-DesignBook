@@ -26,4 +26,7 @@ public interface Show extends Iterable<Show> {
         return Collections.emptyIterator();
     }
 
+    default boolean isNull() {
+        return false;
+    };
 }

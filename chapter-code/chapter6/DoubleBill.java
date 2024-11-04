@@ -35,4 +35,24 @@ public class DoubleBill implements Show {
         return new DoubleBill((Movie) aMovie1.copy(), (Movie) aMovie2.copy());
     }
 
+    public Movie getFirstMovie() {
+        return aMovie1;
+    }
+
+    public Movie getSecondMovie() {
+        return aMovie2;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+
+        DoubleBill doubleBillObj = (DoubleBill) obj;
+        return aMovie1.equals(doubleBillObj.getFirstMovie()) && aMovie2.equals(doubleBillObj.getSecondMovie());
+    }
+
 }

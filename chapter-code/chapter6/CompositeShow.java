@@ -3,6 +3,7 @@ package chapter6;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class CompositeShow implements Show, Iterable<Show> {
     private List<Show> aShows = new ArrayList<>();
@@ -47,5 +48,33 @@ public class CompositeShow implements Show, Iterable<Show> {
     @Override
     public Iterator<Show> iterator() {
         return aShows.iterator();
+    }
+
+    public ArrayList<Show> getShows() {
+        return new ArrayList<>(aShows);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(description(), runningTime());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+
+        CompositeShow compositeShowObj = (CompositeShow) obj;
+
+        ArrayList<Show> objIterator = compositeShowObj.getShows();
+        for (Show show : aShows) {
+            for (Show show1 : objIterator) {
+                if (!(show.equals(show1)))
+                    return false;
+            }
+        }
+        return true;
     }
 }

@@ -11,13 +11,11 @@
  *******************************************************************************/
 package chapter6;
 
-import java.util.Optional;
-
 /**
  * Represents an abstract command in the Command design pattern.
  */
-public interface Command
-{
-	Optional<Card> execute();
+public interface Command {
+	void execute();
+
 	void undo();
 }
