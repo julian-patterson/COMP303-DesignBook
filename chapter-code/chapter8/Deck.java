@@ -11,8 +11,6 @@
  *******************************************************************************/
 package chapter8;
 
-import java.util.Iterator;
-
 /*******************************************************************************
  * Solitaire
  *
@@ -36,68 +34,94 @@ import java.util.Iterator;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 /**
  * Models a deck of 52 cards.
  */
-public class Deck implements CardSource, Iterable<Card>
-{
+public class Deck implements CardSource, Iterable<Card>, Model, DataModel {
 	private CardStack aCards;
-	
+	private ArrayList<DeckObserver> aObservers = new ArrayList<DeckObserver>();
+
 	/**
 	 * Creates a new deck of 52 cards, shuffled.
 	 */
-	public Deck()
-	{
+	public Deck() {
 		shuffle();
 	}
-	
+
+	private void notifyObservers(Card pCard) {
+		for (DeckObserver observer : aObservers) {
+			observer.cardDraw(pCard);
+			observer.sizeChange(aCards.size());
+		}
+	}
+
+	public void addObserver(DeckObserver pDeckObserver) {
+		aObservers.add(pDeckObserver);
+	}
+
+	public void removeObserver(DeckObserver pDeckObserver) {
+		aObservers.remove(pDeckObserver);
+	}
+
+	private void notifyObserversPull() {
+		for (DeckObserver observer : aObservers) {
+			observer.cardDraw(this);
+			observer.sizeChange(this);
+		}
+	}
+
+	public Card cardDraw() {
+		return aCards.peek();
+	}
+
+	public int sizeChange() {
+		return aCards.size();
+	}
+
 	/**
 	 * Reinitializes the deck with all 52 cards, and shuffles them.
 	 */
-	public void shuffle()
-	{
+	public void shuffle() {
 		List<Card> cards = new ArrayList<>();
-		for( Suit suit : Suit.values() )
-		{
-            for( Rank rank : Rank.values() )
-            {
-                cards.add( Card.get( rank, suit ));
-            }
+		for (Suit suit : Suit.values()) {
+			for (Rank rank : Rank.values()) {
+				cards.add(Card.get(rank, suit));
+			}
 		}
 		Collections.shuffle(cards);
 		aCards = new CardStack(cards);
 	}
-	
+
 	/**
 	 * Draws a card from the deck and removes the card from the deck.
+	 * 
 	 * @return The card drawn.
 	 * @pre !isEmpty()
 	 */
-	public Card draw()
-	{
+	public Card draw() {
 		assert !isEmpty();
-		return aCards.pop();
+		Card card = aCards.pop();
+		notifyObservers(card);
+		return card;
 	}
-	
+
 	/**
 	 * @return True iff there are no cards in the deck.
 	 */
-	public boolean isEmpty()
-	{
+	public boolean isEmpty() {
 		return aCards.isEmpty();
 	}
 
 	@Override
-	public Iterator<Card> iterator()
-	{
+	public Iterator<Card> iterator() {
 		return aCards.iterator();
 	}
-	
+
 	@Override
-	public void accept(CardSourceVisitor pVisitor)
-	{
+	public void accept(CardSourceVisitor pVisitor) {
 		pVisitor.visitDeck(this);
 	}
 }
